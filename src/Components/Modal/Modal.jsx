@@ -7,7 +7,7 @@ function Modal({ imageUrl, onClose }) {
   const { isOpen, toggle } = useToggle();
 
   const openModal = () => {
-    toggle(); // Toggle the modal state
+    toggle(); 
     const instance = basicLightbox.create(`
       <img src="${imageUrl}" width="800" height="600">
     `);
