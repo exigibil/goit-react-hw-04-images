@@ -1,23 +1,26 @@
-import basicLightbox from "basiclightbox";
-import styles from "../Modal/Modal.module.css";
-import PropTypes from "prop-types";
+import basicLightbox from 'basiclightbox';
+import styles from '../Modal/Modal.module.css';
+import PropTypes from 'prop-types';
+import { useToggle } from '../usetoggle/useToggle.js';
 
 function Modal({ imageUrl, onClose }) {
-  const closeModal = () => {
-    onClose();
-    document.querySelector(".imageGalleryContainer").style.overflow = "auto";
-  };
+  const { isOpen, toggle } = useToggle();
 
   const openModal = () => {
-    document.querySelector(".imageGalleryContainer").style.overflow = "hidden"
+    toggle(); // Toggle the modal state
     const instance = basicLightbox.create(`
       <img src="${imageUrl}" width="800" height="600">
     `);
     instance.show();
   };
 
+  const handleClose = () => {
+    onClose(); 
+    toggle(); 
+  };
+
   return (
-    <div className={styles.overlay} onClick={closeModal}>
+    <div className={`${styles.overlay} ${isOpen ? styles.show : ''}`} onClick={handleClose}>
       <div className={styles.imgContainer} onClick={(e) => e.stopPropagation()}>
         <img src={imageUrl} onClick={openModal} alt="Click to open" />
       </div>
@@ -27,7 +30,7 @@ function Modal({ imageUrl, onClose }) {
 
 Modal.propTypes = {
   imageUrl: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Modal;
